@@ -1,0 +1,109 @@
+<!doctype html>
+<html>
+  <head>
+	<script src="/js" type="text/javascript" > </script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">  
+	<title>Co nas cieszy</title>
+	<link rel="stylesheet" href="/style" type="text/css" />
+  </head>
+  <body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+       <a class="navbar-brand" href="/"><img src="" class="img-fluid" alt="Responsive image"></a>
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor01">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Główna <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Poczekalnia</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Topka</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/dodaj">Dodaj Post</a>
+            
+        </li>
+         
+	
+      </ul>
+      <form class="form-inline">
+         <span class="logrej" onclick="wyloguj()" id="wyloguj"></span>
+       <a href="/zaloguj"><span class="logrej" id="logowanie"></span></a>
+          <a href="/zarejestruj"><span class="logrej" id="rejestracja"></span></a>
+      </form>
+    </div>
+	</div>
+  </nav>
+
+<div class="container page">
+	<div class="row right">
+	<p class="infos">Tablica informacyjna, reklamki etc </p>
+	</div>
+	
+
+	</div>
+
+
+   
+
+	
+    <script src="/socket.io/socket.io.js"></script>     
+    <script>
+    var socket = io(); 
+    var id = getUrlVars()["id"];
+    if (id>0){
+    socket.emit("requestPost", {id:id});
+    }
+    var check = getCookie("nick");
+    // sprawdzanie czy jest zalogowany
+    socket.on('authLogin', function(){  
+    var check = getCookie("nick");
+	if (check != ""){
+         document.getElementById("wyloguj").innerHTML ="Wyloguj";
+    }else{
+        document.getElementById("wyloguj").innerHTML ="";
+        document.getElementById("rejestracja").innerHTML ="Rejestracja";
+        document.getElementById("logowanie").innerHTML ="Logowanie";
+    }
+        });
+	// Wylogowanie
+    function wyloguj(){
+            var brak = "";
+            setCookie("nick", brak, 365);
+            socket.emit("authLogout");
+    }
+        
+  socket.on('connect', function() {
+       
+      });
+      socket.on('showPost', function(rows) {
+        for (var i=0; i<rows.length; i++) {
+          title = rows[i].title;
+          author = rows[i].author;
+		  content = rows[i].description;
+          date=rows[i].created;
+	      var sx = document.getElementsByClassName("page")[0];
+		  var test = "<div class='row all'> <div class='row TitleAuthor'><div class='col title'>"+title+"</div> <div class='col author'>"+date + " | "+ author+"</div>   </div>   <div class='row content'>"+content+"</div> </div> ";
+		  sx.innerHTML += test;
+
+        }  
+        
+        console.log(rows);
+      });
+	  
+
+	  
+    </script>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+ 
+ </body>
+</html>

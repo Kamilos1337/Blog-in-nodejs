@@ -1,0 +1,270 @@
+	body{
+	
+	    font-family: 'Open Sans', sans;
+	background-color:#191919;
+	color:#eee;
+	}
+	  .bg-dark{
+	padding: 20px !important;
+	background-color:#323232 !important;
+}
+.title{
+text-transform:capitalize ;
+font-size:20px;
+color:black;
+}
+.author{
+font-size:14px;
+text-transform:capitalize ;
+color:gray;
+text-align:right;
+}
+.swal-text{
+	text-align: center !important;
+}
+.content{
+width: 100%;
+    padding-left: 10px !important;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    margin: 0 auto !important;
+    margin-top: 20px;
+    font-size: 18px;
+    word-wrap: break-word;
+    color: black;
+    text-transform:capitalize ;
+}
+
+.all{
+border: 15px solid #323232;
+
+width:65%;
+background-color:white;
+margin-top:100px;
+padding:25px;
+}
+.right{
+background-color:#323232 !important;
+border-radius:5px;
+
+width:30%;
+height:500px;
+float:right;
+}
+.infos{
+font-size:20px;
+padding:20px;
+}
+
+.tekst{
+font-size:24px;
+padding:20px;
+}
+.add{
+margin-top:50px;
+padding-bottom:20px;
+background-color:#323232 !important;
+}
+.btn-lg{
+background-color:green;
+border:0px;
+margin:20px;
+
+}
+.button{
+background-color:green;
+border:0px;
+width:200px;
+color:white;
+font-family: 'Open Sans', sans;
+font-size:20px;
+border-radius:5px;
+cursor: pointer;
+margin:0 auto !important;
+text-align:center;
+display:block;
+padding:10px
+}
+.alercik{display:none; }
+.alert-success, .alert-danger{
+margin-top:20px;}
+
+.remove{
+display:none !important;
+}
+#result, #result2, #resultLogin{
+color:red;
+font-size:18px;
+}
+.righter{
+    float:right;
+}
+.logrej{
+    text-decoration:none;
+    margin-left:20px;
+    cursor:pointer;
+
+}
+.nav-link:hover{
+     text-decoration:none !important;
+    color:orange !important;
+}
+.logrej:hover{color:orange !important; text-decoration:none !important;}
+a{color:white !important; text-decoration: none;}
+a:hover{color:orange;  text-decoration:none !important;}
+
+.TitleAuthor{
+    width: 100%;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    margin: 0 auto !important;
+    margin-top: 20px;
+    font-size: 18px;
+    word-wrap: break-word;
+    color: black;
+}
+.commentArea{
+	margin-top:20px;
+}
+.addComments{
+	    width: 100%;
+    margin: 0 auto;
+    padding: 0 !important;
+    margin-top: 20px !important;
+    display: contents;
+}
+.addComment{
+	    margin: 0 auto;
+    color: black;
+    padding: 10px;
+    border: 1px solid #eee;
+    cursor: pointer;
+    margin-top: 5px;
+}
+.commentButton{
+	width:100%;
+
+}
+.comments{
+width: 100%;
+    margin: 0 auto;
+    color: black;
+}
+.authordate{
+	width:100%;
+}
+.allComments{
+    width: 100%;
+    margin: 0 auto;
+    height: auto;
+	margin-top:20px;
+    background-color: aliceblue;
+    min-height: 100px;
+
+}
+.allSubComments{
+	width: 100%;
+	margin: 0 auto;
+	height: auto;
+
+	padding-top:15px;
+	border-top: 10px solid white;
+    border-left: 50px solid white;
+	background-color: aliceblue;
+	min-height: 100px;
+}
+.UkrywamyKomentarze{
+	display:none !important;
+	width: 100% !important;
+}
+.ButtonSubComments{
+	width: 100% !important;
+	text-align: right !important;
+	cursor:pointer;
+	display: block !important;
+	border-top: 1px solid white;
+}
+#tytulek, #errorTresc{
+	color:red;
+	font-size:16px;
+}
+#ilosc{
+	font-size:18px;
+}
+.OdkrywamyKomentarze{
+	display:block !important;
+	    width: 100% !important;
+}
+.ButtonShowComments{
+	width: 100% !important;
+	text-align: right !important;
+	display: block !important;
+}
+.rowContent{
+	    width: 100%;
+    padding: 20px;
+		word-break: break-all;
+    margin: 10px;
+    border-top: 1px solid white;
+}
+.comContent{
+    width: 100%;
+    padding: 20px;
+		word-break: break-all;
+    margin: 10px;
+    border-top: 1px solid white;
+}
+.subComments{
+    width: 50%;
+		word-break: break-all;
+    padding: 20px;
+		text-align:right !important;
+		margin-top:10px !important;
+    margin: 10px;
+    border-top: 1px solid white;
+}
+.comDate{
+	    text-align: right;
+		padding-top: 10px;
+    padding-bottom: 10px;
+	color:gray;
+}
+.comAuthor{
+	     padding-top: 10px;
+    padding-bottom: 10px;
+	margin-left: 30px;
+}
+.Likes{
+	width:100%;
+
+    padding-left: 10px !important;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    margin: 0 auto !important;
+    margin-top: 20px;
+    font-size: 18px;
+    word-wrap: break-word;
+    color: black;
+    text-transform: capitalize;
+}
+.likeUP{
+	font-size:20px;
+	color:black;
+
+}
+.likeDOWN{
+	font-size:20px;
+		color:black;
+		text-align:right !important;
+}
+#DOWNCOUNT{
+	color:red;
+}
+#UPCOUNT{
+	color:green;
+}

@@ -1,0 +1,277 @@
+<!doctype html>
+<html>
+  <head>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+	<script src="/js" type="text/javascript" > </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" crossorigin="anonymous" />
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<title>Co nas cieszy</title>
+	<link rel="stylesheet" href="/style" type="text/css" />
+  </head>
+  <body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+       <a class="navbar-brand" href="/"><img src="" class="img-fluid" alt="Responsive image"></a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor01">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Główna <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Poczekalnia</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Topka</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/dodaj">Dodaj Post</a>
+
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="" id="playersOnline"></a>
+
+        </li>
+
+
+      </ul>
+      <form class="form-inline">
+         <span class="logrej" onclick="wyloguj()" id="wyloguj"></span>
+       <a href="/zaloguj"><span class="logrej" id="logowanie"></span></a>
+          <a href="/zarejestruj"><span class="logrej" id="rejestracja"></span></a>
+      </form>
+    </div>
+	</div>
+  </nav>
+
+<div class="container page">
+	<div class="row right">
+	<p class="infos">Tablica informacyjna, reklamki etc </p>
+	</div>
+
+
+	</div>
+
+
+
+
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+    function commentAlert(){
+    swal({
+      title: "Udało się!",
+      text: "Dziękujemy za twoją opinie! Aby uniknąć spamu następny komentarz będziesz mógł/a dodać za kilka sekund.",
+      icon: "success",
+      button: "Rozumiem",
+    });
+  }
+    var socket = io();
+    var check = getCookie("nick");
+   	//Wyswietlamy wszystkie like na stronie
+	  socket.emit('LikeUpPlus');
+
+    // Wyswietlanie listy graczy online;
+    socket.on("onlinePlayers", function(data){
+    var online = data.online;
+    document.getElementById("playersOnline").innerHTML = online;
+    });
+
+
+  // sprawdzanie czy jest zalogowany
+  socket.on('authLogin', function(data){
+    var check = getCookie("nick");
+	   if (check != ""){
+          document.getElementById("wyloguj").innerHTML ="Wyloguj";
+      }else{
+          document.getElementById("wyloguj").innerHTML ="";
+          document.getElementById("rejestracja").innerHTML ="Rejestracja";
+          document.getElementById("logowanie").innerHTML ="Logowanie";
+        }
+    });
+	// Wylogowanie
+    function wyloguj(){
+            var brak = "";
+            setCookie("nick", brak, 365);
+            socket.emit("authLogout");
+    }
+
+  socket.on('connect', function() {
+
+      });
+      // Pokaz posty
+      socket.on('showrows', function(rows) {
+      for (var i=0; i<rows.length; i++) {
+      id = rows[i].id;
+      title = rows[i].title;
+      author = rows[i].author;
+		  content = rows[i].description;
+      date=rows[i].created;
+	    var sx = document.getElementsByClassName("page")[0];
+		  var test = "<div class='row all'> <div class='row TitleAuthor'> <a href='/post/?id="+id+"'><div class='col title'>"+title+"</div></a> <div class='col author'>"+date + " | "+ author+"</div>   </div>   <div class='row content'>"+content+"</div><div class='row Likes'><div class='col likeUP' id='likeUP'> <i class='far fa-thumbs-up' onclick='addLikes("+id+")'></i><br><p id='UPCOUNT"+id+"'>0</p> </div> <div class='col likeDOWN' id='likeDOWN'> <i class='far fa-thumbs-down'  onclick='addDislikes("+id+")'></i><br><p id='DOWNCOUNT"+id+"'>0</p> </div> </div><div class='row addComments'> <textarea class='form-control commentArea' rows='2' id='comment"+id+"' placeholder='Napisz komentarz...' name='text'></textarea></div><div class='row commentButton'><p class='addComment' onclick='addComment("+id+")'>Dodaj komentarz </p></div><div class='row comments' id='displayComments"+id+"'></div>  </div> ";
+		    sx.innerHTML += test;
+		    socket.emit('getComments', {id:id});
+		    socket.on('showComments', function(rows) {
+          for (var i=0; i<rows.length; i++) {
+		        comID = rows[i].id;
+            rowID = rows[i].post_id;
+            author = rows[i].author;
+		        content = rows[i].content;
+            date=rows[i].created;
+	         var cx = document.getElementById("displayComments"+rowID);
+		       var comments = author;
+		      if(document.getElementById("comID"+comID)){
+		       }else{
+		        cx.innerHTML += "<div class='row allComments' id='comID"+comID+"'><div class='row authordate'><div class='col comAuthor'>"+author+"</div><div class='col comDate'>"+date+"</div></div><div class='row comContent'>"+content+"</div> <div class='row ButtonSubComments'  id='ButtonSubComments"+comID+"'></div>  <div class='row comments' style='display:none;' id='displaySubComments"+comID+"'></div>  </div>";
+          }
+          socket.emit('getSubComments', {id:comID});
+          socket.on('showSubComments', function(rows) {
+            for (var i=0; i<rows.length; i++) {
+              comID = rows[i].id;
+              rowID = rows[i].comment_id;
+              author = rows[i].author;
+              content = rows[i].content;
+              date=rows[i].created;
+              var total = rows.length;
+              var getButton = document.getElementById("ButtonSubComments"+rowID);
+             var px = document.getElementById("displaySubComments"+rowID);
+             var comments = author;
+             if (total>0){
+               getButton.innerHTML = "<div class='row ButtonShowComments' onclick='displaySubComments("+rowID+","+total+")' id='ButtonShowComments"+rowID+"'>Wyświetl komentarze ("+total+")  </div>";
+             }
+
+            if(document.getElementById("subcomID"+comID)){
+             }else{
+              px.innerHTML += "<div class='row allSubComments' id='subcomID"+comID+"'><div class='row authordate'><div class='col comAuthor'>"+author+"</div><div class='col comDate'>"+date+"</div></div><div class='row comContent'>"+content+"</div>  </div>";
+            }
+          }
+        });
+        }
+      });
+
+    }
+ });
+
+    //wyswietl komentarze (PRZYCISK)
+    function displaySubComments(id, total){
+      $("#displaySubComments"+id).attr('class', 'OdkrywamyKomentarze');
+      var getButton = document.getElementById("ButtonSubComments"+id);
+      getButton.innerHTML = "<div class='row ButtonShowComments' onclick='HideSubComments("+id+","+total+")' id='ButtonHideComments"+id+"'>Ukryj komentarze</div>";
+    }
+    function HideSubComments(id, total){
+      $("#displaySubComments"+id).attr('class', 'UkrywamyKomentarze');
+      var getButton = document.getElementById("ButtonSubComments"+id);
+      getButton.innerHTML = "<div class='row ButtonShowComments' onclick='displaySubComments("+id+","+total+")' id='ButtonShowComments"+id+"'>Wyświetl komentarze ("+total+")</div>";
+    }
+
+    function validateComment(comment) {
+        var re = /^[^<>#&]{2,500}$/;
+        return re.test(comment);
+    }
+
+    // dodaj komentarz
+	  function addComment(id){
+	  var ax = document.getElementById("comment"+id).value;
+	  if(ax.length > 1){
+	  var author = getCookie("nick");
+    if (author != ""){author = author;}else{ author = "Nieznajomy";}
+		var dateObj = new Date();
+		var month = dateObj.getUTCMonth() + 1; //months from 1-12
+		var day = dateObj.getUTCDate();
+		newdate = day + "." + month;
+
+    if (validateComment(ax)) {
+      commentAlert();
+	     socket.emit('addComment', {id:id, content:ax, author:author, date:newdate});
+		   document.getElementById("comment"+id).value="";
+    } else alert("podaj poprawne dane");
+		// Pobierz komentarze
+		socket.emit('getComments', {id:id});
+	   }
+	  }
+
+
+	  function addLikes(id){
+	  var author = getCookie("nick");
+
+      if (author != ""){
+	  author = author;
+	  socket.emit('UsuwamyDisLike', {id:id, author:author});
+	  socket.emit('SprawdzamyKtoryLike', {id:id, author:author});
+	  socket.on('dodajemyLike', function(data){
+	  var id = data.id;
+	  var likes = data.likes
+	  var ax = document.getElementById("UPCOUNT"+ id);
+	  ax.innerHTML = likes;
+	  });
+	  }else{
+					alert("Zaloguj się aby móc dodawać oceny.");
+	 }
+  }
+
+
+	  	function addDislikes(id){
+			var author = getCookie("nick");
+				if (author != ""){
+					author = author;
+					socket.emit('UsuwamyLike', {id:id, author:author});
+					socket.emit('SprawdzamyKtoryDisLike', {id:id, author:author});
+					socket.on('dodajemyDisLike', function(data){
+					var id = data.id;
+					var likes = data.likes
+					var ax = document.getElementById("DOWNCOUNT"+ id);
+					ax.innerHTML = likes;
+	  });
+	 }else{
+					alert("Zaloguj się aby móc dodawać oceny.");
+				}
+	  }
+
+	 socket.on('showLikes', function(rows){
+	  for (var i=0; i<rows.length; i++) {
+	  var id = rows[i].id;
+	  socket.emit('displayLikes', {id:id});
+	  }
+	 });
+	  socket.on('DodajemyLike', function(data){
+	  var id = data.id;
+	  var likes = data.likes
+	  var ax = document.getElementById("UPCOUNT"+ id);
+	  ax.innerHTML = likes;
+
+	  });
+
+
+	socket.on('showDisLikes', function(rows){
+	  for (var i=0; i<rows.length; i++) {
+	  var id = rows[i].id;
+	  socket.emit('displayDisLikes', {id:id});
+	  }
+	 });
+
+	  socket.on('DodajemyDisLike', function(data){
+	  var id = data.id;
+	  var likes = data.likes
+	  var ax = document.getElementById("DOWNCOUNT"+ id);
+	  ax.innerHTML = likes;
+
+	  });
+
+    // email /^[0-9a-zA-Z_.-]+@[0-9a-zA-Z.-]+\.[a-zA-Z]{2,3}$/
+    // login /^[0-9a-zA-Z]{4,20}$/
+    // hasło /^[0-9a-zA-z]{6,20}$/
+    // post  /^[^<>#&]{2,1000}$/
+    // kom   /^[^<>#&]{2,500}$/
+
+    </script>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+ </body>
+</html>
