@@ -1,4 +1,5 @@
 # Blog in nodejs
+It's my first app using nodejs
 
 - Register page
 - Login page
