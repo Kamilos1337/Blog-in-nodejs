@@ -16,6 +16,8 @@ git clone https://github.com/Kamilos1337/Blog-in-nodejs.git
 
 npm install
 
+import cieszy.sql to database
+
 node server.js
 
 
