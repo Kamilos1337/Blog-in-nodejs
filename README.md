@@ -3,7 +3,7 @@ It's my first app using nodejs
 
 - Register page
 - Login page
-- Add post 
+- Adding posts 
 - Main page with all posts
 - Comments for each post
 - Sub comments for each comment
